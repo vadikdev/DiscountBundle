@@ -1,0 +1,30 @@
+{
+    "name" : "vadiktok/DiscountBundle",
+    "description" : "Discount bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "vadiktok",
+        "email" : "vadiktok@gmail.com"
+    }],
+    "keywords" : [
+        "discount bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Vadiktok\\DiscountBundle" : ""
+        }
+    },
+    "target-dir" : "Vadiktok/DiscounBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "0.1-dev"
+        }
+    }
+}
