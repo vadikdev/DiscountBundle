@@ -15,11 +15,10 @@
     "require" : {
     },
     "autoload" : {
-        "psr-0" : {
+        "psr-4" : {
             "Vadiktok\\DiscountBundle" : ""
         }
     },
-    "target-dir" : "Vadiktok/DiscounBundle",
     "repositories" : [{
     }],
     "extra" : {
