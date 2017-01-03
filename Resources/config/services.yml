@@ -1,0 +1,16 @@
+services:
+    vadiktok.admin.discount:
+        class: Vadiktok\DiscountBundle\Admin\DiscountAdmin
+        arguments: [~, Vadiktok\DiscountBundle\Entity\Discount, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Discount }
+    vadiktok.admin.blocked_ip:
+        class: Vadiktok\DiscountBundle\Admin\BlockedIPAdmin
+        arguments: [~, Vadiktok\DiscountBundle\Entity\BlockedIP, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Blocked IPs }
+
+    vadiktok.discount:
+        class: Vadiktok\DiscountBundle\Service\DiscountService
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
