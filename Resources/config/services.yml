@@ -12,5 +12,4 @@ services:
 
     vadiktok.discount:
         class: Vadiktok\DiscountBundle\Service\DiscountService
-        arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack"]

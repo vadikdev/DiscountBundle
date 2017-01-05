@@ -2,7 +2,9 @@
 
 namespace Vadiktok\DiscountBundle\Service;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Vadiktok\DiscountBundle\Entity\BlockedIP;
+use Vadiktok\DiscountBundle\Entity\DiscountableInterface;
 use Vadiktok\DiscountBundle\Exception\DiscountException;
 use Doctrine\ORM\EntityManager;
 
@@ -17,21 +19,28 @@ class DiscountService
     /** @var EntityManager $em */
     private $em;
 
-    public function __construct(EntityManager $em)
+    private $ip;
+
+    public function __construct(EntityManager $em, RequestStack $requestStack)
     {
         $this->em = $em;
+        $this->ip = $requestStack->getCurrentRequest()->getClientIp();
     }
 
-    public function get($code, $ip)
+    public function get(DiscountableInterface $discountable, $code)
     {
-        if ($this->getBlocks($ip) >= 5) {
+        if (!$discountable->getDiscount()) {
+            return null;
+        }
+
+        if ($this->getBlocks() >= 5) {
             throw new DiscountException("IP is blocked", 100);
         }
-        $discount = $this->em->getRepository('DiscountBundle:Discount')->findOneBy([
+        $discount = $this->em->getRepository('VadiktokDiscountBundle:Discount')->findOneBy([
             'code' => $code,
             'used' => false,
         ]);
-        if (!$discount) {
+        if (!$discount || ($discount->getCode() != $discountable->getDiscount()->getCode())) {
             // @TODO: Uncomment this line.
             //$this->block($ip);
             throw new DiscountException("Incorrect discount code", 101);
@@ -40,9 +49,9 @@ class DiscountService
         return $discount;
     }
 
-    private function getBlocks($ip) {
-        return $this->em->getRepository('DiscountBundle:BlockedIP')
-            ->findActive(new \DateTime('-1 hour'), $ip);
+    private function getBlocks() {
+        return $this->em->getRepository('VadiktokDiscountBundle:BlockedIP')
+            ->findActive(new \DateTime('-1 hour'), $this->ip);
     }
 
     private function block($ip) {

@@ -42,6 +42,13 @@ class Discount
      */
     private $used;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="discount", type="integer")
+     */
+    private $discount;
+
     public function __construct()
     {
         $this->used = !empty($this->used);
@@ -129,8 +136,27 @@ class Discount
         return $this->used;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return $this->code;
+        return "{$this->code}: {$this->discount}%";
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscount() {
+        return $this->discount;
+    }
+
+    /**
+     * @param $discount
+     * @return $this
+     */
+    public function setDiscount($discount) {
+        $this->discount = $discount;
+        return $this;
     }
 }
